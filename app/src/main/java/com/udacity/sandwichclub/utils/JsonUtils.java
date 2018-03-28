@@ -1,5 +1,6 @@
 package com.udacity.sandwichclub.utils;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.udacity.sandwichclub.model.Sandwich;
@@ -21,6 +22,7 @@ public class JsonUtils {
     private static final String JSON_IMAGE_INDEX = "image";
     private static final String JSON_INGREDIENTS_INDEX = "ingredients";
 
+    @Nullable
     public static Sandwich parseSandwichJson(String json) {
         Log.d(JsonUtils.class.getName(), json);
 
