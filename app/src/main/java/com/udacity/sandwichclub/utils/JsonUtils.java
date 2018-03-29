@@ -21,6 +21,7 @@ public class JsonUtils {
     private static final String JSON_DESCRIPTION_INDEX = "description";
     private static final String JSON_IMAGE_INDEX = "image";
     private static final String JSON_INGREDIENTS_INDEX = "ingredients";
+    private static final String DEFAULT_EMPTY_VALUE = "";
 
     @Nullable
     public static Sandwich parseSandwichJson(String json) {
@@ -36,21 +37,22 @@ public class JsonUtils {
             JSONObject sandwichJsonObject = new JSONObject(json);
             JSONObject nameJsonObject = sandwichJsonObject.getJSONObject(JSON_NAME_INDEX);
 
-            sandwich.setMainName(nameJsonObject.getString(JSON_NAME_MAIN_INDEX));
-            sandwich.setPlaceOfOrigin(sandwichJsonObject.getString(JSON_PLACE_OF_ORIGIN_INDEX));
-            sandwich.setDescription(sandwichJsonObject.getString(JSON_DESCRIPTION_INDEX));
-            sandwich.setImage(sandwichJsonObject.getString(JSON_IMAGE_INDEX));
+            sandwich.setMainName(nameJsonObject.optString(JSON_NAME_MAIN_INDEX, DEFAULT_EMPTY_VALUE));
+            sandwich.setPlaceOfOrigin(sandwichJsonObject.optString(JSON_PLACE_OF_ORIGIN_INDEX, DEFAULT_EMPTY_VALUE));
+            sandwich.setDescription(sandwichJsonObject.optString(JSON_DESCRIPTION_INDEX, DEFAULT_EMPTY_VALUE));
+            sandwich.setImage(sandwichJsonObject.optString(JSON_IMAGE_INDEX, DEFAULT_EMPTY_VALUE));
 
-            JSONArray ingredientJsonArray = sandwichJsonObject.getJSONArray(JSON_INGREDIENTS_INDEX);
+            JSONArray ingredientJsonArray = sandwichJsonObject.optJSONArray(JSON_INGREDIENTS_INDEX);
             sandwich.setIngredients(convertJsonArray(ingredientJsonArray));
 
-            JSONArray alsoKnownAsJsonArray = nameJsonObject.getJSONArray(JSON_NAME_ALSO_KNOWN_INDEX);
+            JSONArray alsoKnownAsJsonArray = nameJsonObject.optJSONArray(JSON_NAME_ALSO_KNOWN_INDEX);
             sandwich.setAlsoKnownAs(convertJsonArray(alsoKnownAsJsonArray));
 
             return sandwich;
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
